@@ -1,6 +1,6 @@
 
 // Temp parser to not throw error, to be fully implemented
-export async function parseSaveAsXml(xmlText, onProgress) { onProgress?.(50, 'Save-As-XML parser not yet implemented')
+export async function parseSaveAsXML(xmlText, onProgress) { onProgress?.(50, 'Save-As-XML parser not yet implemented')
 
     const parser = new DOMParser()
     const doc = parser.parseFromString(xmlText, 'application/xml')

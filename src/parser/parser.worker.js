@@ -1,7 +1,7 @@
 //web worker entry point - runs in a separate thread
 
 
-import { detectFormat, parseDDR, parseSaveAsXML} from '.index.js'
+import { detectFormat, parseDDR, parseSaveAsXML} from './index.js'
 
 self.onmessage = async (e) => {
     const {type, xmlText} = e.data;
@@ -27,6 +27,8 @@ self.onmessage = async (e) => {
         }
 
         const data = format === 'ddr' ? await parseDDR(cleanText, reportProgress) : await parseSaveAsXML(cleanText, reportProgress)
+
+        self.postMessage({type: 'complete', data})
     } catch (err) {
         self.postMessage({type: 'error', message: err.message})
     }

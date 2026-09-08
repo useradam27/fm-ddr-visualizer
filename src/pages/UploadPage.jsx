@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useDDRStore } from "../store/useDDRStore";
-import { parseDDR } from '../parser/DDRParser'
+import { parseFile } from '../parser/parserClient'
 
 export default function UploadPage() {
     const { setData, setLoading, setError, setProgress, isLoading, progress, progressStage, error } = useDDRStore()
@@ -16,7 +16,7 @@ export default function UploadPage() {
 
         try {
             const text = await file.text()
-            const result = await parseDDR(text, (percent, stage) => {
+            const result = await parseFile(text, (percent, stage) => {
                 setProgress(percent, stage)
             })
             setData(result, file.name)
