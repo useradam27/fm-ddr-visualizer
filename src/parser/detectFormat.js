@@ -4,7 +4,7 @@ export function detectFormat(xmlText) {
     const head = xmlText.slice(0,2048);
 
     if (head.includes('<FMSaveAsXML')) return 'saveAsXml'
-    if (head.includes('<FMPReport')) return 'drr'
+    if (head.includes('<FMPReport')) return 'ddr'
 
     return 'unknown'
 }

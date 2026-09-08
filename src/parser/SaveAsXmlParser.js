@@ -25,7 +25,7 @@ export async function parseSaveAsXML(xmlText, onProgress) {
     const root = doc.FMSaveAsXML || {}
     const file = toArray(root.File)[0] || {}
 
-    const fileName  = root['@_source'] || file['@_name'] || 'Unknown'
+    const fileName  = root['@_Source'] || file['@_name'] || 'Unknown'
     const fmVersion = root['@_product'] || 'Unknown'
 
     onProgress?.(80, 'Building data model...')

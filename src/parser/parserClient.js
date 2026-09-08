@@ -12,6 +12,7 @@ export function parseFile(xmlText, onProgress) {
             const { type, percent, stage, message, data } = e.data;
 
             if (type === 'progress') {
+                console.log('WORKER:', percent, stage)
                 onProgress?.(percent, stage)
             } else if (type === 'complete') {
                 //terminate when done

@@ -9,6 +9,7 @@ self.onmessage = async (e) => {
     if(type !== 'parse') return
 
     try {
+        self.postMessage({ type: 'progress', percent: 1, stage: `len=${xmlText.length} head=${xmlText.slice(0, 60)}` })
         //strim UTF-8 BOM, some fm exports include it
         const cleanText = xmlText.replace(/^\uFEFF/, '');
 
