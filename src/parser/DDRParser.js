@@ -1,6 +1,9 @@
 import { XMLParser } from "fast-xml-parser"
 import { toArray } from "./utils"
 
+import {parseFields } from './ddrParsers/parseFields'
+import { parseScripts } from './ddrParsers/parseScripts'
+
 const xmlParser = new XMLParser({
   ignoreAttributes: false,
   attributeNamePrefix: '@_',
@@ -26,7 +29,15 @@ export async function parseDDR(xmlText, onProgress) {
   const fileName  = file['@_name']    || 'Unknown'
   const fmVersion = root['@_product'] || 'Unknown'
 
+  onProgress?.(30, 'Parsing tables and fields...')
+  const { tables, fields } = parseFields(file)
+
+  onProgress?.(50, 'Parsing scripts...')
+  const scripts = parseScripts(file)
+
+
   onProgress?.(80, 'Building data model...')
+  
   onProgress?.(100, 'Done')
 
   return {
@@ -36,9 +47,9 @@ export async function parseDDR(xmlText, onProgress) {
       fileName,
       generatedAt: new Date().toISOString(),
     },
-    tables: {},
-    fields: {},
-    scripts: {},
+    tables,
+    fields,
+    scripts,
     layouts: {},
     relationships: [],
     valueLists: {},

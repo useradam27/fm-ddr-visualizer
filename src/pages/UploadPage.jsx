@@ -21,6 +21,11 @@ export default function UploadPage() {
             const result = await parseFile(text, (percent, stage) => {
                 setProgress(percent, stage)
             })
+            console.log('format:',  result.meta.format)      // ← temporary
+            console.log('tables:',  Object.keys(result.tables).length)
+            console.log('fields:',  Object.keys(result.fields).length)
+            console.log('scripts:', Object.keys(result.scripts).length)
+
             setData(result, file.name)
         } catch (err) {
             setError(`Failed to parse DRR: ${err.message}`)
