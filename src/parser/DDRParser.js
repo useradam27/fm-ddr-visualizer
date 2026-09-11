@@ -3,6 +3,9 @@ import { toArray } from "./utils"
 
 import {parseFields } from './ddrParsers/parseFields'
 import { parseScripts } from './ddrParsers/parseScripts'
+import { parseLayouts }         from './ddrParsers/parseLayouts'
+import { parseRelationships }   from './ddrParsers/parseRelationships'
+
 
 const xmlParser = new XMLParser({
   ignoreAttributes: false,
@@ -35,9 +38,23 @@ export async function parseDDR(xmlText, onProgress) {
   onProgress?.(50, 'Parsing scripts...')
   const scripts = parseScripts(file)
 
+  onProgress?.(65, 'Parsing layouts...')
+  const layouts = parseLayouts(file, fields)
+ 
+  onProgress?.(75, 'Parsing relationships...')
+  const { occurrences, relationships } = parseRelationships(file)
+
 
   onProgress?.(80, 'Building data model...')
   
+  // Attach occurrences back to their base tables
+  const tableByName = {}
+  Object.values(tables).forEach(t => { tableByName[t.name] = t })
+  Object.values(occurrences).forEach(occ => {
+    tableByName[occ.baseTable]?.occurrences.push(occ.id)
+  })
+
+
   onProgress?.(100, 'Done')
 
   return {
@@ -50,8 +67,9 @@ export async function parseDDR(xmlText, onProgress) {
     tables,
     fields,
     scripts,
-    layouts: {},
-    relationships: [],
+    layouts,
+    occurrences,
+    relationships,
     valueLists: {},
     customFunctions: {},
     privilegeSets: {},

@@ -25,7 +25,8 @@ export default function UploadPage() {
             console.log('tables:',  Object.keys(result.tables).length)
             console.log('fields:',  Object.keys(result.fields).length)
             console.log('scripts:', Object.keys(result.scripts).length)
-
+            console.log('layouts:', Object.keys(result.layouts).length)
+            console.log('relationships:', Object.keys(result.relationships).length)
             setData(result, file.name)
         } catch (err) {
             setError(`Failed to parse DRR: ${err.message}`)
