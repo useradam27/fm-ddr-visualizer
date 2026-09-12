@@ -5,6 +5,10 @@ import {parseFields } from './ddrParsers/parseFields'
 import { parseScripts } from './ddrParsers/parseScripts'
 import { parseLayouts }         from './ddrParsers/parseLayouts'
 import { parseRelationships }   from './ddrParsers/parseRelationships'
+import { parseValueLists }      from './ddrParsers/parseValueLists'
+import { parseCustomFunctions } from './ddrParsers/parseCustomFunctions'
+import { parsePrivileges }      from './ddrParsers/parsePrivileges'
+
 
 
 const xmlParser = new XMLParser({
@@ -45,7 +49,12 @@ export async function parseDDR(xmlText, onProgress) {
   const { occurrences, relationships } = parseRelationships(file)
 
 
-  onProgress?.(80, 'Building data model...')
+  onProgress?.(85, 'Parsing value lists and functions...')
+  const valueLists      = parseValueLists(file)
+  const customFunctions = parseCustomFunctions(file)
+  const privilegeSets   = parsePrivileges(file)
+
+
   
   // Attach occurrences back to their base tables
   const tableByName = {}
@@ -70,9 +79,9 @@ export async function parseDDR(xmlText, onProgress) {
     layouts,
     occurrences,
     relationships,
-    valueLists: {},
-    customFunctions: {},
-    privilegeSets: {},
+    valueLists,
+    customFunctions,
+    privilegeSets,
     issues: [],
   }
 }
