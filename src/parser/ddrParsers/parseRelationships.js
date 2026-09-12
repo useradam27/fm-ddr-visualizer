@@ -8,7 +8,7 @@ export function parseRelationships(root) {
   const graph = root.RelationshipGraph
   if (!graph) return { occurrences, relationships }
  
-  toArray(graph.TableOccurrenceCatalog?.TableOccurrence).forEach(el => {
+  toArray(graph.TableList?.Table).forEach(el => {
     const id = el['@_id']
     occurrences[id] = {
       id,
@@ -17,18 +17,18 @@ export function parseRelationships(root) {
     }
   })
  
-  toArray(graph.RelationshipCatalog?.Relationship).forEach(relEl => {
+  toArray(graph.RelationshipList?.Relationship).forEach(relEl => {
     const joinConditions = []
  
     toArray(relEl.JoinPredicateList?.JoinPredicate).forEach(jp => {
-      const left  = jp.LeftField
-      const right = jp.RightField
+      const left  = jp.LeftField?.Field
+      const right = jp.RightField?.Field
       joinConditions.push({
         type:       jp['@_type'] || 'Equal',
         leftTable:  left?.['@_table']  || '',
-        leftField:  left?.['@_field']  || '',
+        leftField:  left?.['@_name']  || '',
         rightTable: right?.['@_table'] || '',
-        rightField: right?.['@_field'] || '',
+        rightField: right?.['@_name'] || '',
       })
     })
  
@@ -39,8 +39,8 @@ export function parseRelationships(root) {
       leftOccurrence:  leftTable?.['@_name'] || '',
       rightOccurrence: relEl.RightTable?.['@_name'] || '',
       joinConditions,
-      allowCreate: leftTable?.['@_allowCreation'] === 'True',
-      allowDelete: leftTable?.['@_allowDeletion'] === 'True',
+      allowCreate: leftTable?.['@_cascadeCreate'] === 'True',
+      allowDelete: leftTable?.['@_cascadeDelete'] === 'True',
     })
   })
  

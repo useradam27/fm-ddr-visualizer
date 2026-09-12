@@ -33,6 +33,9 @@ export async function parseDDR(xmlText, onProgress) {
   const root = doc.FMPReport || {}
   const file = toArray(root.File)[0] || {}
 
+  console.log('on file:', Object.keys(file))
+  console.log('on root:', Object.keys(root))
+
   const fileName  = file['@_name']    || 'Unknown'
   const fmVersion = root['@_product'] || 'Unknown'
 
