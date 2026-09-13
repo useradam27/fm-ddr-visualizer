@@ -20,42 +20,13 @@ function StatCard({ label, count, color = 'blue' }) {
 }
 
 export default function OverviewPage() {
-  const { data, reset } = useDDRStore()
+  const { data } = useDDRStore()
   const {
     meta, tables, fields, scripts, layouts, relationships, valueLists, customFunctions, privilegeSets,
   } = data
 
-  const isSaveAsXml = meta.format === 'saveAsXml'
-
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100 font-mono p-8">
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-bold text-white">{meta.fileName}</h1>
-            <span className={`text-xs px-2 py-0.5 rounded border
-              ${isSaveAsXml
-                ? 'bg-purple-900/40 text-purple-300 border-purple-800'
-                : 'bg-blue-900/40 text-blue-300 border-blue-800'
-              }`}>
-              {isSaveAsXml ? 'Save-As-XML' : 'DDR'}
-            </span>
-          </div>
-          <p className="text-gray-400 mt-1">
-            FileMaker {meta.fmVersion}
-            {meta.xmlFormat && ` · XML format ${meta.xmlFormat}`}
-            {' · '}
-            Analyzed {new Date(meta.generatedAt).toLocaleString()}
-          </p>
-        </div>
-        <button
-          onClick={reset}
-          className="text-gray-400 hover:text-white text-sm border border-gray-700
-                     px-3 py-1.5 rounded hover:border-gray-500 transition-colors"
-        >
-          ← Load different file
-        </button>
-      </div>
+    <div className="h-full overflow-y-auto p-6">
  
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
         <StatCard label="Tables"           count={Object.keys(tables).length}          color="blue"   />
