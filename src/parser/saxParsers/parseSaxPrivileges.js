@@ -5,7 +5,7 @@ import { toArray } from '../utils'
 export function parseSaxPrivileges(root) {
     const privilegeSets = {}
  
-    const catalog = root.PrivilegesCatalog
+    const catalog = root.PrivilegeSetsCatalog?.ObjectList
     if (!catalog) return privilegeSets
  
     toArray(catalog.PrivilegeSet).forEach(el => {

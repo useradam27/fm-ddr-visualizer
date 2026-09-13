@@ -4,23 +4,30 @@ export function parseSaxBaseTables(root) {
     const tables = {}
     const fields = {}
 
-    const catalog = root.BaseTableCatalog
-    if (!catalog) return { tables, fields }
-
-    toArray(catalog.BaseTable).forEach(tableEl => {
+    //first pass to get tables
+    toArray(root.BaseTableCatalog?.BaseTable).forEach(tableEl => {
         const tableId = tableEl['@_id']
-        const tableName = tableEl['@_name']
+        tables[tableId] = {
+            id: tableId,
+            name: tableEl['@_name'],
+            fields: [],
+            occurrences: [],
+        }
+    })
 
-        const table = { id: tableId, name: tableName, fields: [], occurrences: [] }
+    toArray(root.FieldsForTables?.FieldCatalog).forEach(catalogEl => {
+        const tableId = catalogEl.BaseTableReference['@_id']
+        const table = tables[tableId]
+        if(!table) return
 
-        toArray(tableEl.FieldCatalog?.Field).forEach(fieldEl => {
+        toArray(catalogEl.ObjectList?.Field).forEach(fieldEl => {
             const fieldId = `${tableId}_${fieldEl['@_id']}`
             const storage = fieldEl.Storage
 
             fields[fieldId] = {
                 id: fieldId,
                 tableId,
-                tableName,
+                tableName: table.name,
                 name: fieldEl['@_name'],
                 dataType: fieldEl['@_dataType'] || 'Text',
                 fieldType: fieldEl['@_fieldType'] || 'Normal',
@@ -38,8 +45,6 @@ export function parseSaxBaseTables(root) {
 
             table.fields.push(fieldId)
         })
-        
-        tables[tableId] = table
     })
 
     return { tables, fields }

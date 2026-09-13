@@ -32,10 +32,10 @@ export async function parseSaveAsXML(xmlText, onProgress) {
     }
 
     const root = doc.FMSaveAsXML || {}
-    const file = toArray(root.File)[0] || {}
+    const file = root.Structure?.AddAction || {}
 
-    const fileName  = root['@_Source'] || file['@_name'] || 'Unknown'
-    const fmVersion = root['@_product'] || 'Unknown'
+    const fileName  = root['@_File'] || file['@_name'] || 'Unknown'
+    const fmVersion = root['@_version'] || 'Unknown'
 
     onProgress?.(30, 'Parsing tables and fields...')
     const { tables, fields } = parseSaxBaseTables(file)

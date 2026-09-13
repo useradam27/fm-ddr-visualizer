@@ -6,7 +6,7 @@ import { toArray } from '../utils'
 export function parseSaxCustomFunctions(root) {
     const customFunctions = {}
  
-    const catalog = root.CustomFunctionCatalog
+    const catalog = root.CustomFunctionsCatalog?.ObjectList
     if (!catalog) return customFunctions
  
     toArray(catalog.CustomFunction).forEach(el => {
