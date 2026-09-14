@@ -26,8 +26,8 @@ export default function AppLayout({ children }) {
                     <p className="text-sm text-white font-semibold truncate" title={data?.meta?.fileName || fileName}>
                         {data?.meta?.fileName || fileName}
                     </p>
-                    <div className="flex item-center gap-2 mt-1.5">
-                        <span className="text-xs text-gray-500">FM {data?.meta?.fileVersion}</span>
+                    <div className="flex items-center gap-2 mt-1.5">
+                        <span className="text-xs text-gray-500">FM {data?.meta?.fmVersion}</span>
                         <span className={`text-xs px-1.5 py-0.5 rounded ${isSaveAsXml ? 'bg-purple-900/40 text-purple-300' : 'bg-blue-900/40 text-blue-300'}`}>
                             {isSaveAsXml ? 'Save As XML' : 'DDR'}
                         </span>
@@ -51,7 +51,7 @@ export default function AppLayout({ children }) {
                 </nav>
                 
                 <div className="p-4 border-t border-gray-800">
-                    <button onclick={reset} className="w-full text-xs text-gray-500 hover:text-gray-300 transition-colors text-left">
+                    <button onClick={ reset } className="w-full text-xs text-gray-500 hover:text-gray-300 transition-colors text-left">
                         ← Load different file
                     </button>
                 </div>
