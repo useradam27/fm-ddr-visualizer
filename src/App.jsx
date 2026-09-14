@@ -3,6 +3,7 @@ import { useDDRStore } from './store/useDDRStore'
 import AppLayout from './components/layout/AppLayout'
 import UploadPage from './pages/UploadPage'
 import OverviewPage from './pages/OverviewPage'
+import TablesPage from './pages/TablesPage'
 
 
 function ComingSoon({ name }) {
@@ -25,8 +26,8 @@ export default function App() {
       <AppLayout>
         <Routes>
           <Route path="/"                  element={<OverviewPage />} />
-          <Route path="/tables"            element={<ComingSoon name="Tables" />} />
-          <Route path="/tables/:tableId"   element={<ComingSoon name="Tables detail" />}/>
+          <Route path="/tables"            element={<TablesPage />} />
+          <Route path="/tables/:tableId"   element={<TablesPage />} />
           <Route path="/scripts"           element={<ComingSoon name="Scripts" />}/>
           <Route path="/scripts/:scriptId" element={<ComingSoon name="Scripts detail" />}/>
           <Route path="/layouts"           element={<ComingSoon name="Layouts" />} />
