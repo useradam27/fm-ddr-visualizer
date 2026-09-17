@@ -4,6 +4,7 @@ import AppLayout from './components/layout/AppLayout'
 import UploadPage from './pages/UploadPage'
 import OverviewPage from './pages/OverviewPage'
 import TablesPage from './pages/TablesPage'
+import ScriptsPage from './pages/ScriptsPage'
 
 
 function ComingSoon({ name }) {
@@ -28,8 +29,8 @@ export default function App() {
           <Route path="/"                  element={<OverviewPage />} />
           <Route path="/tables"            element={<TablesPage />} />
           <Route path="/tables/:tableId"   element={<TablesPage />} />
-          <Route path="/scripts"           element={<ComingSoon name="Scripts" />}/>
-          <Route path="/scripts/:scriptId" element={<ComingSoon name="Scripts detail" />}/>
+          <Route path="/scripts"           element={<ScriptsPage />} />
+          <Route path="/scripts/:scriptId" element={<ScriptsPage />} />
           <Route path="/layouts"           element={<ComingSoon name="Layouts" />} />
           <Route path="/relationships"     element={<ComingSoon name="Relationships" />} />
           <Route path="/valuelists"        element={<ComingSoon name="Value Lists" />} />
