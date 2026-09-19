@@ -4,6 +4,7 @@ import { useDDRStore } from '../store/useDDRStore'
 import PageHeader from '../components/PageHeader'
 import Badge from '../components/Badge'
 import EmptyState from '../components/EmptyState'
+import NoteEditor from '../components/NoteEditor'
 
 
 const TYPE_COLORS = {
@@ -227,6 +228,7 @@ function FieldDetail({ field }) {
           Usage tracking coming soon.
         </p>
       )}
+      <NoteEditor itemID={field.id} />
     </div>
   )
 }

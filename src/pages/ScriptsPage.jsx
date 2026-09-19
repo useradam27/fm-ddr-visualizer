@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useDDRStore } from '../store/useDDRStore'
 import Badge from '../components/Badge'
 import EmptyState from '../components/EmptyState'
+import NoteEditor from '../components/NoteEditor'
 
 export default function ScriptsPage() {
     const { scriptId } = useParams()
@@ -180,6 +181,7 @@ function ScriptDetail({ script, allScripts, format, onNavigate }) {
           Full script source is only available in Save-As-XML exports.
         </p>
       )}
+      <NoteEditor itemID={script.id} />
     </div>
   )
 }
