@@ -1,16 +1,66 @@
-# React + Vite
+# FM Solution Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A free, browser-based tool for exploring FileMaker solutions. Drop in an XML
+export and browse the tables, fields, scripts, and layouts without opening
+FileMaker.
 
-Currently, two official plugins are available:
+Works with both export formats:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **DDR** (Tools → Database Design Report) - FileMaker 19+
+- **Save-As-XML** (File → Save a XML) - FileMaker 2023+
 
-## React Compiler
+Everything runs locally in the browser and your file is never uploaded anywhere.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Live:** https://useradam27.github.io/fm-ddr-visualizer/
 
-## Expanding the ESLint configuration
+## Purpose
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+When I first started working with Filemaker, I was a little overwhelmed by job's chaotic database.  I was left to myself to explore it, mapping out each relationship, script and field.  I wanted to make a tool that would have made my life a lot easier back then.  I have since learned that there are a lot of similar tools online.  Some paid, others Mac-only.  I wanted something lightweight easy and to access anywhere, and hopefully this does the job.  The feature set is heavily inspire by some of those other tools on the market, and I will be add more to get closer to it (some of them really do have some great features.)
+
+
+## Current features
+
+- Upload DDR or Save-As-XML, auto-detected on drop
+- Parsing runs in a Web Worker with a progress bar, so the UI stays responsive
+  on large files
+- Handles UTF-8 and UTF-16 encoded exports
+- Overview dashboard with counts for every component type
+- Table browser — click a table, see its fields, click a field for full detail
+  (type, auto-enter, global, repetitions, validation, comment)
+- Script browser — grouped by folder, step-by-step view, disabled steps marked
+- Script source view for Save-As-XML exports (DDR doesn't include it)
+- Notes and tags on any field or script, saved in the browser
+- Saved searches
+
+## Planned
+
+- Relationship graph
+- Cross-references — which scripts and layouts use a given field, which scripts
+  call which
+- Issues report — empty scripts, unused fields, broken references
+- Privilege set matrix
+- Global search across everything (Cmd+K)
+- Layout, value list, and custom function browsers
+- AI script summaries (would need an API key — not decided yet)
+
+## Running locally
+
+```bash
+npm install
+npm run dev
+```
+
+## Built with
+
+React, Vite, Tailwind, Zustand, fast-xml-parser.
+
+## Notes
+
+Notes and tags are stored in localStorage keyed by filename, so renaming your
+export will lose them.
+
+Not affiliated with Claris.
+
+## License
+
+MIT
