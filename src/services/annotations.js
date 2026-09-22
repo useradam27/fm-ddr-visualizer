@@ -12,6 +12,7 @@ function read(key, fallback) {
 function write(key, value) {
     try {
         localStorage.setItem(key, JSON.stringify(value))
+        return true
     } catch (err) {
         //quota exceeded or storage disabled
         console.warn('Could not save to localStorage:', err)

@@ -4,6 +4,8 @@ import { useDDRStore } from '../store/useDDRStore'
 import Badge from '../components/Badge'
 import EmptyState from '../components/EmptyState'
 import NoteEditor from '../components/NoteEditor'
+import SavedSearches from '../components/SavedSearches'
+
 
 export default function ScriptsPage() {
     const { scriptId } = useParams()
@@ -47,6 +49,9 @@ export default function ScriptsPage() {
                             focus:outline-none focus:border-gray-500"
                 />
                 </div>
+
+                <SavedSearches currentQuery={search} onSelect={setSearch} />
+
         
                 <div className="flex-1 overflow-y-auto">
                 {filtered

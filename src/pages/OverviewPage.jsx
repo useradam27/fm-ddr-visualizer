@@ -22,7 +22,7 @@ function StatCard({ label, count, color = 'blue' }) {
 export default function OverviewPage() {
   const { data } = useDDRStore()
   const {
-    meta, tables, fields, scripts, layouts, relationships, valueLists, customFunctions, privilegeSets,
+     tables, fields, scripts, layouts, relationships, valueLists, customFunctions, privilegeSets,
   } = data
 
   return (

@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useDDRStore } from '../store/useDDRStore'
+import { getAnnotations } from '../services/annotations'
 import PageHeader from '../components/PageHeader'
 import Badge from '../components/Badge'
 import EmptyState from '../components/EmptyState'
 import NoteEditor from '../components/NoteEditor'
+import SavedSearches from '../components/SavedSearches'
 
 
 const TYPE_COLORS = {
@@ -30,6 +32,13 @@ export default function TablesPage() {
 
     const activeTableId = tableId || tables[0]?.id
     const activeTable = data.tables[activeTableId]
+
+    const fileName = useDDRStore(state => state.fileName)
+    const [annotations, setAnnotations] = useState({})
+
+    useEffect(() => {
+        setAnnotations(getAnnotations(fileName))
+    }, [fileName, selectedFieldId])
 
     const fields = (activeTable?.fields || [])
         .map(fid => data.fields[fid])
@@ -83,6 +92,9 @@ export default function TablesPage() {
                             focus:outline-none focus:border-gray-500"
                 />
                 </div>
+
+                <SavedSearches currentQuery={search} onSelect={setSearch} />
+
                 <div className="flex-1 overflow-y-auto">
                 {fields.length === 0
                     ? <EmptyState message="No fields match." />
@@ -90,6 +102,7 @@ export default function TablesPage() {
                         <FieldRow
                         key={field.id}
                         field={field}
+                        annotation={annotations[field.id]}
                         isSelected={field.id === selectedFieldId}
                         onClick={() => setSelectedFieldId(
                             field.id === selectedFieldId ? null : field.id
@@ -109,7 +122,7 @@ export default function TablesPage() {
     )
 }
 
-function FieldRow({ field, isSelected, onClick }) {
+function FieldRow({ field, annotation, isSelected, onClick }) {
   return (
     <div
       onClick={onClick}
@@ -121,6 +134,13 @@ function FieldRow({ field, isSelected, onClick }) {
         <span className="text-gray-200 text-sm truncate">{field.name}</span>
         {field.options?.global && <Badge label="global" color="purple" />}
         {field.options?.required && <Badge label="required" color="amber" />}
+
+        {annotation?.tags?.length > 0 && (
+          <span className="text-xs text-blue-500">●</span>
+        )}
+        {annotation?.note && !annotation?.tags?.length && (
+          <span className="text-xs text-gray-600">●</span>
+        )}
       </div>
       <div className="flex items-center gap-2 shrink-0 ml-3">
         {field.options?.repeats > 1 && (
