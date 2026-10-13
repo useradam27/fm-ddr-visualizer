@@ -7,19 +7,19 @@ export function parseFields(root) {
     const catalog = root.BaseTableCatalog
     if (!catalog) return { tables, fields }
 
-    toArray(catalog.BaseTable).forEach(tabelEl => {
-        const tabelID = tabelEl['@_id']
-        const tableName = tabelEl['@_name']
+    toArray(catalog.BaseTable).forEach(tableEl => {
+        const tableID = tableEl['@_id']
+        const tableName = tableEl['@_name']
 
         const table = {
-            id: tabelID,
+            id: tableID,
             name: tableName,
             fields: [],
             occurrences: []
         }
 
-        toArray(tabelEl.FieldCatalog?.Field).forEach(fieldEl => {
-            const fieldID = `{tabelID}_${fieldEl['@_id']}`
+        toArray(tableEl.FieldCatalog?.Field).forEach(fieldEl => {
+            const fieldID = `${tableID}_${fieldEl['@_id']}`
 
             const storage = fieldEl.Storage
             const validation = fieldEl.Validation
@@ -27,7 +27,7 @@ export function parseFields(root) {
 
             fields[fieldID] = {
                 id: fieldID,
-                tabelID,
+                tableID,
                 tableName,
                 name: fieldEl['@_name'],
                 dataType: fieldEl['@_dataType'] || 'Text',  //pretty sure FM defaults to Text
@@ -45,7 +45,7 @@ export function parseFields(root) {
             }
             table.fields.push(fieldID)
         })
-        tables[tabelID] = table
+        tables[tableID] = table
     })
     return { tables, fields }
 }

@@ -14,3 +14,6 @@ export const useDDRStore = create((set) => ({
     setError: (error) => set({error, isLoading: false, progress: 0}),
     reset: () => set({data: null, fileName: null, isLoading: false, progress: 0, progressStage: '', error: null})
 }))
+
+// Debug access from DevTools, remove before final release
+window.useDDRStore = useDDRStore
