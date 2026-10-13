@@ -11,10 +11,16 @@ export function parseSaxRelationships(root) {
  
   toArray(root.TableOccurrenceCatalog?.TableOccurrence).forEach(el => {
     const id = el['@_id']
+    const c  = el.Color
+    const rect = el.CoordRect
     occurrences[id] = {
       id,
       name: el['@_name'],
-      baseTable: el['@_baseTable'] || el['@_baseTableName'] || '',
+      baseTable: el.BaseTableSourceReference?.BaseTableReference?.['@_name'] || '',
+      color: c ? `rgb(${c['@_red']}, ${c['@_green']}, ${c['@_blue']})` : '',
+      position: rect
+        ? { x: parseInt(rect['@_left'], 10), y: parseInt(rect['@_top'], 10) }
+        : null,
     }
   })
  
@@ -22,23 +28,24 @@ export function parseSaxRelationships(root) {
     const joinConditions = []
  
     toArray(relEl.JoinPredicateList?.JoinPredicate).forEach(jp => {
-      const left  = jp.LeftField?.Field  || jp.LeftField
-      const right = jp.RightField?.Field || jp.RightField
+      const left  = jp.LeftField?.FieldReference
+      const right = jp.RightField?.FieldReferece
       joinConditions.push({
         type:       jp['@_type'] || 'Equal',
-        leftTable:  left?.['@_table']  || '',
-        leftField:  left?.['@_field']  || '',
-        rightTable: right?.['@_table'] || '',
-        rightField: right?.['@_field'] || '',
+        leftTable:  left?.TableOccurrenceReference?.['@_name']  || '',
+        leftField:  left?.['@_name']  || '',
+        rightTable: right?.TableOccurrenceReference?.['@_name'] || '',
+        rightField: right?.['@_name'] || '',
       })
     })
  
     const leftTable = relEl.LeftTable
+    const rightTable = relEl.RightTable
  
     relationships.push({
       id:              relEl['@_id'],
-      leftOccurrence:  leftTable?.['@_name'] || '',
-      rightOccurrence: relEl.RightTable?.['@_name'] || '',
+      leftOccurrence:  leftTable?.TableOccurrenceReference?.['@_name']  || '',
+      rightOccurrence: rightTable?.TableOccurrenceReference?.['@_name'] || '',
       joinConditions,
       allowCreate: leftTable?.['@_allowCreation'] === 'True',
       allowDelete: leftTable?.['@_allowDeletion'] === 'True',

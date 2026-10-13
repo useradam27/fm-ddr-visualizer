@@ -23,21 +23,22 @@ export function parseSaxBaseTables(root) {
         toArray(catalogEl.ObjectList?.Field).forEach(fieldEl => {
             const fieldId = `${tableId}_${fieldEl['@_id']}`
             const storage = fieldEl.Storage
+            const validation = fieldEl.Validation
 
             fields[fieldId] = {
                 id: fieldId,
                 tableId,
                 tableName: table.name,
                 name: fieldEl['@_name'],
-                dataType: fieldEl['@_dataType'] || 'Text',
-                fieldType: fieldEl['@_fieldType'] || 'Normal',
+                dataType: fieldEl['@_datatype'] || 'Text',
+                fieldType: fieldEl['@_fieldtype'] || 'Normal',
                 comment: fieldEl['@_comment'] || '',
                 options: {
                     autoEnter: fieldEl.AutoEnter?.['@_value'] !== 'No',
                     global: storage?.['@_global'] === 'True',
-                    repeats: parseInt(storage?.['@_maxRepitions'] || '1', 10),
-                    unique: fieldEl.Validation?.Unique?.['@_value'] === 'True',
-                    required: fieldEl.Validation?.NotEmpty?.['@_value'] === 'True',
+                    repeats: parseInt(storage?.['@_maxRepetitions'] || '1', 10),
+                    unique:    validation?.['@_unique']   === 'True',
+                    required:  validation?.['@_notEmpty'] === 'True',
                 },
                 usedInScripts: [],
                 usedInLayouts: [],
