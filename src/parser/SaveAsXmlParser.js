@@ -43,11 +43,11 @@ export async function parseSaveAsXML(xmlText, onProgress) {
     onProgress?.(50, 'Parsing scripts...')
     const scripts = parseSaxScripts(file)
 
-    onProgress?.(60, 'Parsing layouts...')
-    const layouts = parseSaxLayouts(file, fields)
-
-    onProgress?.(70, 'Parsing relationships...')
+    onProgress?.(60, 'Parsing relationships...')
     const { occurrences, relationships } = parseSaxRelationships(file)
+
+    onProgress?.(70, 'Parsing layouts...')
+    const layouts = parseSaxLayouts(file, fields, occurrences)
 
     onProgress?.(80, 'Parsing value lists and functions...')
     const valueLists      = parseSaxValueLists(file)
