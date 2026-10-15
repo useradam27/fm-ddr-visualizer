@@ -14,6 +14,7 @@ export function parseRelationships(root) {
       id,
       name: el['@_name'],
       baseTable: el['@_baseTable'] || el['@_baseTableName'] || '',
+      color: el['@_color'] || '',
     }
   })
  
